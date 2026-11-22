@@ -1,0 +1,9 @@
+﻿{
+  "version": "0.0.1",
+  "configurations": [
+    { "name": "backend", "runtimeExecutable": "D:/Project Management Tool/backend/.venv/Scripts/python.exe", "runtimeArgs": ["-m", "uvicorn", "app.main:app", "--app-dir", "D:/Project Management Tool/backend", "--port", "8000"], "port": 8000 },
+    { "name": "frontend", "runtimeExecutable": "npm", "runtimeArgs": ["--prefix", "D:/Project Management Tool/frontend", "run", "dev", "--", "-p", "3000"], "port": 3000 },
+    { "name": "frontend-prod", "runtimeExecutable": "npm", "runtimeArgs": ["--prefix", "D:/Project Management Tool/frontend", "run", "start", "--", "-p", "3000"], "port": 3000 }
+  ]
+}
+

@@ -1,0 +1,21 @@
+# Never put these in a repository
+.env
+.env.*
+!.env.example
+backend/.env
+backend/dev.db
+backend/*.db
+backend/uploads/
+backend/.venv/
+**/__pycache__/
+**/.pytest_cache/
+
+# Customer workbooks and decks (real project data)
+*.xlsx
+*.xls
+*.pptx
+
+# Frontend build output
+frontend/node_modules/
+frontend/.next/
+frontend/out/
