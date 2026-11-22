@@ -1,0 +1,123 @@
+@import "tailwindcss";
+
+/*
+ * WFX PMO design tokens.
+ * The existing screens use Tailwind's blue-* shades for headings, links, buttons and active states, so the
+ * brand palette is defined here once by re-pointing those shades: navy ink for headings, a refined indigo-blue
+ * as the single accent. No screen needs editing for the palette to apply.
+ */
+@theme {
+  --color-blue-50: #eef2ff;
+  --color-blue-100: #e0e7ff;
+  --color-blue-200: #c7d2fe;
+  --color-blue-300: #a5b4fc;
+  --color-blue-600: #4a63e0;
+  --color-blue-700: #3b52d4;
+  --color-blue-800: #2f43b8;
+  --color-blue-900: #2a3cab;
+  --color-blue-950: #111c44;
+
+  --color-canvas: #f4f5f8;
+  --color-nav: #f4f5f8;
+}
+
+:root {
+  color-scheme: light;
+}
+
+body {
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  background: var(--color-canvas);
+  font-feature-settings: "cv11", "ss01";
+}
+
+/* Keyboard focus is always visible, in the accent colour. */
+:focus-visible {
+  outline: 2px solid var(--color-blue-700);
+  outline-offset: 2px;
+}
+
+/* Motion: short, purposeful, clearly visible. People who ask their system for reduced motion keep soft fades but lose all movement. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+  .wfx-enter, .wfx-row, .wfx-pop { animation-name: wfx-fade-only !important; animation-duration: 260ms !important; animation-delay: 0ms !important; }
+}
+@keyframes wfx-fade-only { from { opacity: 0; } to { opacity: 1; } }
+
+/* Tables: one calm style for every register, tracker and report. Utilities on a cell still win. */
+@layer base {
+  table { border-collapse: collapse; }
+  thead th {
+    padding-top: 0.5rem; padding-bottom: 0.5rem;
+    font-size: 11px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase;
+    color: var(--color-slate-500);
+  }
+  thead { border-bottom-color: var(--color-slate-200); }
+  tbody td { padding-top: 0.4rem; padding-bottom: 0.4rem; }
+  thead th { background: var(--color-slate-50); }
+  thead th:first-child, tbody td:first-child { padding-left: 0.625rem; }
+  thead th:last-child, tbody td:last-child { padding-right: 0.625rem; }
+  thead th:first-child { border-top-left-radius: 0.5rem; }
+  thead th:last-child { border-top-right-radius: 0.5rem; }
+  tbody tr { border-bottom: 1px solid var(--color-slate-100); }
+  tbody tr { transition: background-color 120ms ease-out; }
+  tbody tr:hover { background-color: color-mix(in srgb, var(--color-blue-50) 55%, transparent); }
+  textarea, select { border-radius: 0.375rem; }
+  ::selection { background: var(--color-blue-100); }
+}
+/* Slide-over panels and dialogs fade in. */
+.fixed.inset-0.z-40.flex.justify-end, .fixed.inset-0.z-30.flex.justify-end { animation: wfx-backdrop 160ms ease-out both; }
+.fixed.inset-0.z-50.flex.items-center { animation: wfx-backdrop 160ms ease-out both; }
+@keyframes wfx-backdrop { from { opacity: 0; } to { opacity: 1; } }
+
+/* A screen rises into place. */
+@keyframes wfx-fade-in {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: none; }
+}
+.wfx-enter { animation: wfx-fade-in 420ms cubic-bezier(0.22, 1, 0.36, 1) both; }
+
+/* Table rows cascade in, first dozen only. */
+@keyframes wfx-row { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: none; } }
+tbody tr { animation: wfx-row 340ms cubic-bezier(0.22, 1, 0.36, 1) both; }
+tbody tr:nth-child(2) { animation-delay: 40ms; } tbody tr:nth-child(3) { animation-delay: 80ms; } tbody tr:nth-child(4) { animation-delay: 120ms; }
+tbody tr:nth-child(5) { animation-delay: 160ms; } tbody tr:nth-child(6) { animation-delay: 200ms; } tbody tr:nth-child(7) { animation-delay: 240ms; }
+tbody tr:nth-child(8) { animation-delay: 280ms; } tbody tr:nth-child(9) { animation-delay: 320ms; } tbody tr:nth-child(10) { animation-delay: 360ms; }
+tbody tr:nth-child(n + 11) { animation-delay: 400ms; } tbody tr:nth-child(n + 16) { animation: none; }
+@media (prefers-reduced-motion: reduce) { tbody tr { animation-name: wfx-fade-only; animation-delay: 0ms; } }
+
+/* Pop: dialogs and side panels scale or slide in. */
+@keyframes wfx-pop { from { opacity: 0; transform: scale(0.95) translateY(8px); } to { opacity: 1; transform: none; } }
+@keyframes wfx-slide-in { from { transform: translateX(48px); opacity: 0.4; } to { transform: none; opacity: 1; } }
+.fixed.inset-0.z-50.flex.items-center > div { animation: wfx-pop 260ms cubic-bezier(0.22, 1, 0.36, 1) both; }
+.fixed.inset-0.z-40.flex.justify-end > aside, .fixed.inset-0.z-30.flex.justify-end > aside { animation: wfx-slide-in 300ms cubic-bezier(0.22, 1, 0.36, 1) both; }
+
+/* Progress and chart bars grow from zero. */
+@keyframes wfx-grow { from { transform: scaleX(0); opacity: 0.4; } to { transform: scaleX(1); opacity: 1; } }
+.wfx-grow { transform-origin: left center; animation: wfx-grow 700ms cubic-bezier(0.22, 1, 0.36, 1) both; }
+
+/* Loading placeholders shimmer. */
+@keyframes wfx-shimmer { 0% { background-position: -200px 0; } 100% { background-position: calc(200px + 100%) 0; } }
+.wfx-shimmer { background-image: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.65), transparent); background-size: 200px 100%; background-repeat: no-repeat; animation: wfx-shimmer 1.3s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) { .wfx-shimmer { animation: none; } }
+
+/* Toasts slide up and in. */
+@keyframes wfx-toast-in { from { opacity: 0; transform: translateY(16px) scale(0.97); } to { opacity: 1; transform: none; } }
+.wfx-toast { animation: wfx-toast-in 320ms cubic-bezier(0.22, 1, 0.36, 1) both; }
+
+/* A thin progress line runs across the top when you move to another screen. */
+@keyframes wfx-progress { 0% { transform: scaleX(0); opacity: 1; } 70% { transform: scaleX(1); opacity: 1; } 100% { transform: scaleX(1); opacity: 0; } }
+.wfx-progress { transform-origin: left; animation: wfx-progress 700ms cubic-bezier(0.22, 1, 0.36, 1) both; }
+@media (prefers-reduced-motion: reduce) { .wfx-progress { display: none; } }
+
+/* Buttons respond to a press. */
+button:not(:disabled):active { transform: scale(0.97); }
+
+@media print { .wfx-enter, tbody tr { animation: none !important; } }
+
+/* Dashboards print as a landscape page: no navigation, colours kept. */
+@page { size: A4 landscape; margin: 8mm; }
+@media print {
+  body { -webkit-print-color-adjust: exact; print-color-adjust: exact; background: #fff; }
+  main { padding: 0 !important; }
+}
